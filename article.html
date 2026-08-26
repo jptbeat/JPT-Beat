@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Story — JPT Beat</title>
+<link rel="stylesheet" href="css/style.css">
+<script src="js/theme.js" defer></script>
+</head>
+<body>
+<div class="page">
+
+  <header class="site-header">
+    <div class="header-top">
+      <div class="brand">
+        <div class="brand-mark">JT</div>
+        <div class="brand-text">
+          <h1>JPT Beat</h1>
+          <span>Unofficial Student News — Taravella High</span>
+        </div>
+      </div>
+      <div class="header-controls">
+        <button id="theme-toggle" class="theme-toggle">🌙 Dark Mode</button>
+      </div>
+    </div>
+    <nav class="site-nav">
+      <div class="container">
+        <a href="index.html">Headlines</a>
+        <a href="archive.html">Archive</a>
+        <a href="contact.html">Contact Us</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <div class="container">
+      <div id="article-slot"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div>JPT Beat &mdash; Unofficial JP Taravella High School News</div>
+      <div class="disclaimer">
+        JPT Beat is an independent, student-produced publication and is not an official publication of
+        J.P. Taravella High School or Broward County Public Schools. Views expressed are those of the authors.
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script src="js/articles.js"></script>
+<script>
+async function init(){
+  const params = new URLSearchParams(window.location.search);
+  const slug = params.get("slug");
+  const slot = document.getElementById("article-slot");
+  if(!slug){
+    slot.innerHTML = '<div class="empty-state">No story specified. <a href="index.html">Return to headlines</a>.</div>';
+    return;
+  }
+  try{
+    const a = await loadArticle(slug);
+    document.title = a.title + " — JPT Beat";
+
+    const heroHtml = a.heroImage
+      ? `<img class="article-hero" src="${articleImagePath(slug, a.heroImage)}" alt="${a.title}">`
+      : "";
+
+    const bodyHtml = (a.content || []).map(p => `<p>${p}</p>`).join("");
+
+    const linksHtml = (a.links && a.links.length)
+      ? `<div class="article-links"><h3>Related Links</h3><ul>${a.links.map(l => `<li><a href="${l.url}" target="_blank" rel="noopener">${l.label}</a></li>`).join("")}</ul></div>`
+      : "";
+
+    slot.innerHTML = `
+      <div class="article-header">
+        <span class="card-tag">${a.category || "News"}</span>
+        <h1>${a.title}</h1>
+        <div class="article-meta">
+          <span>By ${a.author}</span>
+          <span>${formatDate(a.date)}</span>
+        </div>
+      </div>
+      ${heroHtml}
+      <div class="article-body">${bodyHtml}${linksHtml}</div>
+      <p style="margin-top:32px;"><a href="archive.html">&larr; Back to Archive</a></p>
+    `;
+  }catch(err){
+    slot.innerHTML = '<div class="empty-state">Sorry, that story could not be found. <a href="index.html">Return to headlines</a>.</div>';
+  }
+}
+init();
+</script>
+</body>
+</html>

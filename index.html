@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JPT Beat — JP Taravella High School News (Unofficial)</title>
+<link rel="stylesheet" href="css/style.css">
+<script src="js/theme.js" defer></script>
+</head>
+<body>
+<div class="page">
+
+  <header class="site-header">
+    <div class="header-top">
+      <div class="brand">
+        <div class="brand-mark">JPT</div>
+        <div class="brand-text">
+          <h1>JPT Beat</h1>
+          <span>Unofficial Student News — Taravella High</span>
+        </div>
+      </div>
+      <div class="header-controls">
+        <button id="theme-toggle" class="theme-toggle">🌙 Dark Mode</button>
+      </div>
+    </div>
+    <nav class="site-nav">
+      <div class="container">
+        <a href="index.html" class="active">Headlines</a>
+        <a href="archive.html">Archive</a>
+        <a href="contact.html">Contact Us</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <div class="container">
+      <h2 class="page-title">Latest Headlines</h2>
+      <p class="page-subtitle">Independent, student-run coverage of Trojan life. Not affiliated with Broward County Public Schools.</p>
+
+      <div id="featured-slot"></div>
+      <div id="headline-slot" class="headline-list"></div>
+      <div id="empty-slot"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div>JPT Beat &mdash; Unofficial JP Taravella High School News</div>
+      <div class="disclaimer">
+        JPT Beat is an independent, student-produced publication and is not an official publication of
+        J.P. Taravella High School or Broward County Public Schools. Views expressed are those of the authors.
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script src="js/articles.js"></script>
+<script>
+async function renderHome(){
+  const list = await loadArticleIndex();
+  const featuredSlot = document.getElementById("featured-slot");
+  const headlineSlot = document.getElementById("headline-slot");
+  const emptySlot = document.getElementById("empty-slot");
+
+  if(list.length === 0){
+    emptySlot.innerHTML = '<div class="empty-state">No stories published yet. Check back soon, or add an article via the Story Exporter app.</div>';
+    return;
+  }
+
+  const [top, second, ...rest] = list;
+
+  function imgTag(item){
+    const src = item.heroImage ? articleImagePath(item.slug, item.heroImage) : "";
+    return src
+      ? `<img class="card-img" src="${src}" alt="${item.title}">`
+      : `<div class="card-img" style="display:flex;align-items:center;justify-content:center;color:#7a8290;font-size:.8rem;">No image</div>`;
+  }
+
+  let featuredHtml = `<div class="featured">
+    <a class="card" href="article.html?slug=${encodeURIComponent(top.slug)}">
+      ${imgTag(top)}
+      <div class="card-body">
+        <span class="card-tag">${top.category || "News"}</span>
+        <h2>${top.title}</h2>
+        <p class="excerpt">${excerpt(top.summary, 220)}</p>
+        <div class="card-meta"><span>${top.author}</span><span>${formatDate(top.date)}</span></div>
+      </div>
+    </a>`;
+
+  if(second){
+    featuredHtml += `
+    <a class="card" href="article.html?slug=${encodeURIComponent(second.slug)}">
+      ${imgTag(second)}
+      <div class="card-body">
+        <span class="card-tag">${second.category || "News"}</span>
+        <h3>${second.title}</h3>
+        <p class="excerpt">${excerpt(second.summary, 140)}</p>
+        <div class="card-meta"><span>${second.author}</span><span>${formatDate(second.date)}</span></div>
+      </div>
+    </a>`;
+  }
+  featuredHtml += `</div>`;
+  featuredSlot.innerHTML = featuredHtml;
+
+  headlineSlot.innerHTML = rest.map(item => `
+    <a class="headline-row" href="article.html?slug=${encodeURIComponent(item.slug)}">
+      ${item.heroImage
+        ? `<img src="${articleImagePath(item.slug, item.heroImage)}" alt="${item.title}">`
+        : `<div style="width:160px;height:100px;background:var(--silver-300);border-radius:6px;"></div>`}
+      <div>
+        <span class="card-tag">${item.category || "News"}</span>
+        <h3 style="margin:6px 0;">${item.title}</h3>
+        <p class="excerpt" style="margin:0 0 6px;">${excerpt(item.summary, 160)}</p>
+        <div class="card-meta" style="border:none;padding:0;"><span>${item.author}</span><span>${formatDate(item.date)}</span></div>
+      </div>
+    </a>
+  `).join("");
+}
+renderHome();
+</script>
+</body>
+</html>

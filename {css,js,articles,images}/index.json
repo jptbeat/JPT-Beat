@@ -1,0 +1,11 @@
+[
+  {
+    "slug": "test-article-1",
+    "title": "Test article 1",
+    "author": "Jane Doe",
+    "date": "2026-08-25",
+    "category": "Other",
+    "summary": "This is a test article to see if hte system is working",
+    "heroImage": "moon_PNG46.png"
+  }
+]

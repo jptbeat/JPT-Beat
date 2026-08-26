@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Us — JPT Beat</title>
+<link rel="stylesheet" href="css/style.css">
+<script src="js/theme.js" defer></script>
+</head>
+<body>
+<div class="page">
+
+  <header class="site-header">
+    <div class="header-top">
+      <div class="brand">
+        <div class="brand-mark">JT</div>
+        <div class="brand-text">
+          <h1>JPT Beat</h1>
+          <span>Unofficial Student News — Taravella High</span>
+        </div>
+      </div>
+      <div class="header-controls">
+        <button id="theme-toggle" class="theme-toggle">🌙 Dark Mode</button>
+      </div>
+    </div>
+    <nav class="site-nav">
+      <div class="container">
+        <a href="index.html">Headlines</a>
+        <a href="archive.html">Archive</a>
+        <a href="contact.html" class="active">Contact Us</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <div class="container">
+      <h2 class="page-title">Contact Us</h2>
+      <p class="page-subtitle">Have a story idea, tip, or feedback? Send it our way.</p>
+          <h2>Copy this format when contacting jptbeat@gmail.com</h2>
+          <p>First, Last Name: </br> Request type: </br></br>Message Contents:</p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div>JPT Beat &mdash; Unofficial JP Taravella High School News</div>
+      <div class="disclaimer">
+        JPT Beat is an independent, student-produced publication and is not an official publication of
+        J.P. Taravella High School or Broward County Public Schools. Views expressed are those of the authors.
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script>
+// NOTE: This form currently opens the user's email client with a pre-filled message
+// (via a mailto: link) since this is a static site with no backend.
+// To collect submissions directly into a database/inbox instead, connect this form
+// to a form service (e.g. Formspree, Getform) or a small backend endpoint, and swap
+// out the submit handler below to POST to that service.
+document.getElementById("contact-form").addEventListener("submit", function(e){
+  e.preventDefault();
+  const name = document.getElementById("name").value;
+  const email = document.getElementById("email").value;
+  const type = document.getElementById("type").value;
+  const message = document.getElementById("message").value;
+
+  const subject = encodeURIComponent(`[JPT Beat] ${type} from ${name}`);
+  const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nType: ${type}\n\nMessage:\n${message}`);
+
+  // Replace this address with the outlet's real inbox.
+  const CONTACT_EMAIL = "jptbeat.tips@example.com";
+
+  window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
+  document.getElementById("form-status").textContent = "Opening your email client to send this message...";
+});
+</script>
+</body>
+</html>
