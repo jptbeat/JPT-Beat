@@ -16,5 +16,23 @@
     "category": "Other",
     "summary": "How to get your story published on JPT Beat",
     "heroImage": ""
+  },
+  {
+    "slug": "local-hoodlums-harras-freshmen",
+    "title": "Local Hoodlums Harras Freshmen",
+    "author": "Jamiroquai",
+    "date": "2026-09-12",
+    "category": "News",
+    "summary": "Local Hoodlums do hoodlum things!",
+    "heroImage": ""
+  },
+  {
+    "slug": "the-rain-of-terror",
+    "title": "The Rain of Terror",
+    "author": "Jamiroquai",
+    "date": "2026-09-13",
+    "category": "News",
+    "summary": "Terrifiyng rain!",
+    "heroImage": "44224.jpg"
   }
 ]
